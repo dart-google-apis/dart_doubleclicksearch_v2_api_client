@@ -14,7 +14,7 @@ Adding dependency to pubspec.yaml
 
 ```
   dependencies:
-    google_doubleclicksearch_v2_api: '>=0.4.0'
+    google_doubleclicksearch_v2_api: '>=0.4.1'
 ```
 
 For web applications:
