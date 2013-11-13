@@ -14,7 +14,7 @@ Adding dependency to pubspec.yaml
 
 ```
   dependencies:
-    google_doubleclicksearch_v2_api: '>=0.4.1'
+    google_doubleclicksearch_v2_api: '>=0.4.2'
 ```
 
 For web applications:
@@ -29,13 +29,13 @@ For console application:
   import "package:google_doubleclicksearch_v2_api/doubleclicksearch_v2_api_console.dart" as doubleclicksearchclient;
 ```
 
-Working with out authentication the following constructor can be called:
+Working without authentication the following constructor can be called:
 
 ```
   var doubleclicksearch = new doubleclicksearchclient.Doubleclicksearch();
 ```
 
-Working with authentication then create a new `GoogleOAuth2` object and pass it to the constructor:
+To use authentication create a new `GoogleOAuth2` object and pass it to the constructor:
 
 
 ```
