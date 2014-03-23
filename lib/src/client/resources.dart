@@ -208,6 +208,37 @@ class ConversionResource_ {
     return response
       .then((data) => new ConversionList.fromJson(data));
   }
+
+  /**
+   * Updates the availabilities of a batch of floodlight activities in DoubleClick Search.
+   *
+   * [request] - UpdateAvailabilityRequest to send in this request
+   *
+   * [optParams] - Additional query parameters
+   */
+  async.Future<UpdateAvailabilityResponse> updateAvailability(UpdateAvailabilityRequest request, {core.Map optParams}) {
+    var url = "conversion/updateAvailability";
+    var urlParams = new core.Map();
+    var queryParams = new core.Map();
+
+    var paramErrors = new core.List();
+    if (optParams != null) {
+      optParams.forEach((key, value) {
+        if (value != null && queryParams[key] == null) {
+          queryParams[key] = value;
+        }
+      });
+    }
+
+    if (!paramErrors.isEmpty) {
+      throw new core.ArgumentError(paramErrors.join(" / "));
+    }
+
+    var response;
+    response = _client.request(url, "POST", body: request.toString(), urlParams: urlParams, queryParams: queryParams);
+    return response
+      .then((data) => new UpdateAvailabilityResponse.fromJson(data));
+  }
 }
 
 class ReportsResource_ {

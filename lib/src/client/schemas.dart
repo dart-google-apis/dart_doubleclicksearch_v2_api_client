@@ -1,5 +1,79 @@
 part of doubleclicksearch_v2_api;
 
+/** A message containing availability data relevant to DoubleClick Search. */
+class Availability {
+
+  /** DS advertiser ID. */
+  core.int advertiserId;
+
+  /** DS agency ID. */
+  core.int agencyId;
+
+  /** The time by which all conversions have been uploaded, in epoch millis UTC. */
+  core.String availabilityTimestamp;
+
+  /** The numeric segmentation identifier (for example, DoubleClick Search Floodlight activity ID). */
+  core.int segmentationId;
+
+  /** The friendly segmentation identifier (for example, DoubleClick Search Floodlight activity name). */
+  core.String segmentationName;
+
+  /** The segmentation type that this availability is for (its default value is FLOODLIGHT). */
+  core.String segmentationType;
+
+  /** Create new Availability from JSON data */
+  Availability.fromJson(core.Map json) {
+    if (json.containsKey("advertiserId")) {
+      advertiserId = (json["advertiserId"] is core.String) ? core.int.parse(json["advertiserId"]) : json["advertiserId"];
+    }
+    if (json.containsKey("agencyId")) {
+      agencyId = (json["agencyId"] is core.String) ? core.int.parse(json["agencyId"]) : json["agencyId"];
+    }
+    if (json.containsKey("availabilityTimestamp")) {
+      availabilityTimestamp = json["availabilityTimestamp"];
+    }
+    if (json.containsKey("segmentationId")) {
+      segmentationId = (json["segmentationId"] is core.String) ? core.int.parse(json["segmentationId"]) : json["segmentationId"];
+    }
+    if (json.containsKey("segmentationName")) {
+      segmentationName = json["segmentationName"];
+    }
+    if (json.containsKey("segmentationType")) {
+      segmentationType = json["segmentationType"];
+    }
+  }
+
+  /** Create JSON Object for Availability */
+  core.Map toJson() {
+    var output = new core.Map();
+
+    if (advertiserId != null) {
+      output["advertiserId"] = advertiserId;
+    }
+    if (agencyId != null) {
+      output["agencyId"] = agencyId;
+    }
+    if (availabilityTimestamp != null) {
+      output["availabilityTimestamp"] = availabilityTimestamp;
+    }
+    if (segmentationId != null) {
+      output["segmentationId"] = segmentationId;
+    }
+    if (segmentationName != null) {
+      output["segmentationName"] = segmentationName;
+    }
+    if (segmentationType != null) {
+      output["segmentationType"] = segmentationType;
+    }
+
+    return output;
+  }
+
+  /** Return String representation of Availability */
+  core.String toString() => JSON.encode(this.toJson());
+
+}
+
 /** A conversion containing data relevant to DoubleClick Search. */
 class Conversion {
 
@@ -21,7 +95,7 @@ class Conversion {
   /** DS click ID for the conversion. */
   core.String clickId;
 
-  /** Advertiser provided ID for the conversion, also known as the order ID. */
+  /** Advertiser-provided ID for the conversion, also known as the order ID. */
   core.String conversionId;
 
   /** The time at which the conversion was last modified, in epoch millis UTC. */
@@ -33,14 +107,23 @@ class Conversion {
   /** DS criterion (keyword) ID. */
   core.int criterionId;
 
-  /** The currency code for the revenue. Should be in ISO 4217 alphabetic (3-char) format. */
+  /** The currency code for the conversion's revenue. Should be in ISO 4217 alphabetic (3-char) format. */
   core.String currencyCode;
+
+  /** Custom dimensions for the conversion, which can be used to filter data in a report. */
+  core.List<CustomDimension> customDimension;
+
+  /** Custom metrics for the conversion. */
+  core.List<CustomMetric> customMetric;
 
   /** DS conversion ID. */
   core.int dsConversionId;
 
   /** DS engine account ID. */
   core.int engineAccountId;
+
+  /** The advertiser-provided order id for the conversion. */
+  core.String floodlightOrderId;
 
   /** The quantity of this conversion, in millis. */
   core.int quantityMillis;
@@ -98,11 +181,20 @@ class Conversion {
     if (json.containsKey("currencyCode")) {
       currencyCode = json["currencyCode"];
     }
+    if (json.containsKey("customDimension")) {
+      customDimension = json["customDimension"].map((customDimensionItem) => new CustomDimension.fromJson(customDimensionItem)).toList();
+    }
+    if (json.containsKey("customMetric")) {
+      customMetric = json["customMetric"].map((customMetricItem) => new CustomMetric.fromJson(customMetricItem)).toList();
+    }
     if (json.containsKey("dsConversionId")) {
       dsConversionId = (json["dsConversionId"] is core.String) ? core.int.parse(json["dsConversionId"]) : json["dsConversionId"];
     }
     if (json.containsKey("engineAccountId")) {
       engineAccountId = (json["engineAccountId"] is core.String) ? core.int.parse(json["engineAccountId"]) : json["engineAccountId"];
+    }
+    if (json.containsKey("floodlightOrderId")) {
+      floodlightOrderId = json["floodlightOrderId"];
     }
     if (json.containsKey("quantityMillis")) {
       quantityMillis = (json["quantityMillis"] is core.String) ? core.int.parse(json["quantityMillis"]) : json["quantityMillis"];
@@ -164,11 +256,20 @@ class Conversion {
     if (currencyCode != null) {
       output["currencyCode"] = currencyCode;
     }
+    if (customDimension != null) {
+      output["customDimension"] = customDimension.map((customDimensionItem) => customDimensionItem.toJson()).toList();
+    }
+    if (customMetric != null) {
+      output["customMetric"] = customMetric.map((customMetricItem) => customMetricItem.toJson()).toList();
+    }
     if (dsConversionId != null) {
       output["dsConversionId"] = dsConversionId;
     }
     if (engineAccountId != null) {
       output["engineAccountId"] = engineAccountId;
+    }
+    if (floodlightOrderId != null) {
+      output["floodlightOrderId"] = floodlightOrderId;
     }
     if (quantityMillis != null) {
       output["quantityMillis"] = quantityMillis;
@@ -234,6 +335,82 @@ class ConversionList {
   }
 
   /** Return String representation of ConversionList */
+  core.String toString() => JSON.encode(this.toJson());
+
+}
+
+/** A message containing the custome dimension. */
+class CustomDimension {
+
+  /** Custom dimension name. */
+  core.String name;
+
+  /** Custom dimension value. */
+  core.String value;
+
+  /** Create new CustomDimension from JSON data */
+  CustomDimension.fromJson(core.Map json) {
+    if (json.containsKey("name")) {
+      name = json["name"];
+    }
+    if (json.containsKey("value")) {
+      value = json["value"];
+    }
+  }
+
+  /** Create JSON Object for CustomDimension */
+  core.Map toJson() {
+    var output = new core.Map();
+
+    if (name != null) {
+      output["name"] = name;
+    }
+    if (value != null) {
+      output["value"] = value;
+    }
+
+    return output;
+  }
+
+  /** Return String representation of CustomDimension */
+  core.String toString() => JSON.encode(this.toJson());
+
+}
+
+/** A message containing the custome metric. */
+class CustomMetric {
+
+  /** Custom metric name. */
+  core.String name;
+
+  /** Custom metric numeric value. */
+  core.num value;
+
+  /** Create new CustomMetric from JSON data */
+  CustomMetric.fromJson(core.Map json) {
+    if (json.containsKey("name")) {
+      name = json["name"];
+    }
+    if (json.containsKey("value")) {
+      value = json["value"];
+    }
+  }
+
+  /** Create JSON Object for CustomMetric */
+  core.Map toJson() {
+    var output = new core.Map();
+
+    if (name != null) {
+      output["name"] = name;
+    }
+    if (value != null) {
+      output["value"] = value;
+    }
+
+    return output;
+  }
+
+  /** Return String representation of CustomMetric */
   core.String toString() => JSON.encode(this.toJson());
 
 }
@@ -524,7 +701,7 @@ class ReportRequestColumns {
   /** Synchronous report only. Set to true to group by this column. Defaults to false. */
   core.bool groupByColumn;
 
-  /** Header text that will appear in the report. This can be used to prevent collisions between DoubleClick Search columns and saved columns with the same name. */
+  /** Text used to identify this column in the report output; defaults to columnName or savedColumnName when not specified. This can be used to prevent collisions between DoubleClick Search columns and saved columns with the same name. */
   core.String headerText;
 
   /** Name of a saved column to include in the report. The report must be scoped at advertiser or lower, and this saved column must already be created in the DoubleClick Search UI. */
@@ -885,21 +1062,77 @@ class ReportRequestTimeRange {
 }
 
 /** A row in a DoubleClick Search report. */
-class ReportRow {
+class ReportRow extends SchemaAnyObject {
 
   /** Create new ReportRow from JSON data */
   ReportRow.fromJson(core.Map json) {
+    innerMap.addAll(json);
   }
 
   /** Create JSON Object for ReportRow */
   core.Map toJson() {
+    return innerMap;
+  }
+
+  /** Return String representation of ReportRow */
+  core.String toString() => JSON.encode(this.toJson());
+
+}
+
+/** The request to update availability. */
+class UpdateAvailabilityRequest {
+
+  /** The availabilities being requested. */
+  core.List<Availability> availabilities;
+
+  /** Create new UpdateAvailabilityRequest from JSON data */
+  UpdateAvailabilityRequest.fromJson(core.Map json) {
+    if (json.containsKey("availabilities")) {
+      availabilities = json["availabilities"].map((availabilitiesItem) => new Availability.fromJson(availabilitiesItem)).toList();
+    }
+  }
+
+  /** Create JSON Object for UpdateAvailabilityRequest */
+  core.Map toJson() {
     var output = new core.Map();
 
+    if (availabilities != null) {
+      output["availabilities"] = availabilities.map((availabilitiesItem) => availabilitiesItem.toJson()).toList();
+    }
 
     return output;
   }
 
-  /** Return String representation of ReportRow */
+  /** Return String representation of UpdateAvailabilityRequest */
+  core.String toString() => JSON.encode(this.toJson());
+
+}
+
+/** The response to a update availability request. */
+class UpdateAvailabilityResponse {
+
+  /** The availabilities being returned. */
+  core.List<Availability> availabilities;
+
+  /** Create new UpdateAvailabilityResponse from JSON data */
+  UpdateAvailabilityResponse.fromJson(core.Map json) {
+    if (json.containsKey("availabilities")) {
+      availabilities = json["availabilities"].map((availabilitiesItem) => new Availability.fromJson(availabilitiesItem)).toList();
+    }
+  }
+
+  /** Create JSON Object for UpdateAvailabilityResponse */
+  core.Map toJson() {
+    var output = new core.Map();
+
+    if (availabilities != null) {
+      output["availabilities"] = availabilities.map((availabilitiesItem) => availabilitiesItem.toJson()).toList();
+    }
+
+    return output;
+  }
+
+  /** Return String representation of UpdateAvailabilityResponse */
   core.String toString() => JSON.encode(this.toJson());
 
 }
