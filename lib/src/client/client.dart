@@ -10,6 +10,7 @@ abstract class Client extends ClientBase {
 
   ConversionResource_ get conversion => new ConversionResource_(this);
   ReportsResource_ get reports => new ReportsResource_(this);
+  SavedColumnsResource_ get savedColumns => new SavedColumnsResource_(this);
 
   //
   // Parameters

@@ -381,3 +381,48 @@ class ReportsResource_ {
   }
 }
 
+class SavedColumnsResource_ {
+
+  final Client _client;
+
+  SavedColumnsResource_(Client client) :
+      _client = client;
+
+  /**
+   * Retrieve the list of saved columns for a specified advertiser.
+   *
+   * [agencyId] - DS ID of the agency.
+   *
+   * [advertiserId] - DS ID of the advertiser.
+   *
+   * [optParams] - Additional query parameters
+   */
+  async.Future<SavedColumnList> list(core.int agencyId, core.int advertiserId, {core.Map optParams}) {
+    var url = "agency/{agencyId}/advertiser/{advertiserId}/savedcolumns";
+    var urlParams = new core.Map();
+    var queryParams = new core.Map();
+
+    var paramErrors = new core.List();
+    if (advertiserId == null) paramErrors.add("advertiserId is required");
+    if (advertiserId != null) urlParams["advertiserId"] = advertiserId;
+    if (agencyId == null) paramErrors.add("agencyId is required");
+    if (agencyId != null) urlParams["agencyId"] = agencyId;
+    if (optParams != null) {
+      optParams.forEach((key, value) {
+        if (value != null && queryParams[key] == null) {
+          queryParams[key] = value;
+        }
+      });
+    }
+
+    if (!paramErrors.isEmpty) {
+      throw new core.ArgumentError(paramErrors.join(" / "));
+    }
+
+    var response;
+    response = _client.request(url, "GET", urlParams: urlParams, queryParams: queryParams);
+    return response
+      .then((data) => new SavedColumnList.fromJson(data));
+  }
+}
+

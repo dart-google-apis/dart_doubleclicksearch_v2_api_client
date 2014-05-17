@@ -565,8 +565,11 @@ class ReportRequest {
   /** A list of filters to be applied to the report. */
   core.List<ReportRequestFilters> filters;
 
-  /** Determines if deleted entities should be included in the report. Defaults to true. */
+  /** Determines if removed entities should be included in the report. Defaults to false. Deprecated, please use includeRemovedEntities instead. */
   core.bool includeDeletedEntities;
+
+  /** Determines if removed entities should be included in the report. Defaults to false. */
+  core.bool includeRemovedEntities;
 
   /** Asynchronous report only. The maximum number of rows per report file. A large report is split into many files based on this field. Acceptable values are 1000000 to 100000000, inclusive. */
   core.int maxRowsPerFile;
@@ -608,6 +611,9 @@ class ReportRequest {
     }
     if (json.containsKey("includeDeletedEntities")) {
       includeDeletedEntities = json["includeDeletedEntities"];
+    }
+    if (json.containsKey("includeRemovedEntities")) {
+      includeRemovedEntities = json["includeRemovedEntities"];
     }
     if (json.containsKey("maxRowsPerFile")) {
       maxRowsPerFile = json["maxRowsPerFile"];
@@ -653,6 +659,9 @@ class ReportRequest {
     }
     if (includeDeletedEntities != null) {
       output["includeDeletedEntities"] = includeDeletedEntities;
+    }
+    if (includeRemovedEntities != null) {
+      output["includeRemovedEntities"] = includeRemovedEntities;
     }
     if (maxRowsPerFile != null) {
       output["maxRowsPerFile"] = maxRowsPerFile;
@@ -1075,6 +1084,91 @@ class ReportRow extends SchemaAnyObject {
   }
 
   /** Return String representation of ReportRow */
+  core.String toString() => JSON.encode(this.toJson());
+
+}
+
+/** A saved column */
+class SavedColumn {
+
+  /** Identifies this as a SavedColumn resource. Value: the fixed string doubleclicksearch#savedColumn. */
+  core.String kind;
+
+  /** The name of the saved column. */
+  core.String savedColumnName;
+
+  /** The type of data this saved column will produce. */
+  core.String type;
+
+  /** Create new SavedColumn from JSON data */
+  SavedColumn.fromJson(core.Map json) {
+    if (json.containsKey("kind")) {
+      kind = json["kind"];
+    }
+    if (json.containsKey("savedColumnName")) {
+      savedColumnName = json["savedColumnName"];
+    }
+    if (json.containsKey("type")) {
+      type = json["type"];
+    }
+  }
+
+  /** Create JSON Object for SavedColumn */
+  core.Map toJson() {
+    var output = new core.Map();
+
+    if (kind != null) {
+      output["kind"] = kind;
+    }
+    if (savedColumnName != null) {
+      output["savedColumnName"] = savedColumnName;
+    }
+    if (type != null) {
+      output["type"] = type;
+    }
+
+    return output;
+  }
+
+  /** Return String representation of SavedColumn */
+  core.String toString() => JSON.encode(this.toJson());
+
+}
+
+/** A list of saved columns. Advertisers create saved columns to report on Floodlight activities, Google Analytics goals, or custom KPIs. To request reports with saved columns, you'll need the saved column names that are available from this list. */
+class SavedColumnList {
+
+  /** The saved columns being requested. */
+  core.List<SavedColumn> items;
+
+  /** Identifies this as a SavedColumnList resource. Value: the fixed string doubleclicksearch#savedColumnList. */
+  core.String kind;
+
+  /** Create new SavedColumnList from JSON data */
+  SavedColumnList.fromJson(core.Map json) {
+    if (json.containsKey("items")) {
+      items = json["items"].map((itemsItem) => new SavedColumn.fromJson(itemsItem)).toList();
+    }
+    if (json.containsKey("kind")) {
+      kind = json["kind"];
+    }
+  }
+
+  /** Create JSON Object for SavedColumnList */
+  core.Map toJson() {
+    var output = new core.Map();
+
+    if (items != null) {
+      output["items"] = items.map((itemsItem) => itemsItem.toJson()).toList();
+    }
+    if (kind != null) {
+      output["kind"] = kind;
+    }
+
+    return output;
+  }
+
+  /** Return String representation of SavedColumnList */
   core.String toString() => JSON.encode(this.toJson());
 
 }
