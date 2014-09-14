@@ -7,6 +7,7 @@ import 'package:google_doubleclicksearch_v2_api/src/console_client.dart';
 import "package:google_doubleclicksearch_v2_api/doubleclicksearch_v2_api_client.dart";
 
 /** Report and modify your advertising data in DoubleClick Search (for example, campaigns, ad groups, keywords, and conversions). */
+@deprecated
 class Doubleclicksearch extends Client with ConsoleClient {
 
   /** OAuth Scope2: View and manage your advertising data in DoubleClick Search */

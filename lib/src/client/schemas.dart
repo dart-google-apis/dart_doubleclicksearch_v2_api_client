@@ -554,10 +554,102 @@ class ReportFiles {
 }
 
 /** A request object used to create a DoubleClick Search report. */
+class ReportApiColumnSpec {
+
+  /** Name of a DoubleClick Search column to include in the report. */
+  core.String columnName;
+
+  /** Segments a report by a custom dimension. The report must be scoped to an advertiser or lower, and the custom dimension must already be set up in DoubleClick Search. The custom dimension name, which appears in DoubleClick Search, is case sensitive. */
+  core.String customDimensionName;
+
+  /** Inclusive day in YYYY-MM-DD format. When provided, this overrides the overall time range of the report for this column only. Must be provided together with startDate. */
+  core.String endDate;
+
+  /** Synchronous report only. Set to true to group by this column. Defaults to false. */
+  core.bool groupByColumn;
+
+  /** Text used to identify this column in the report output; defaults to columnName or savedColumnName when not specified. This can be used to prevent collisions between DoubleClick Search columns and saved columns with the same name. */
+  core.String headerText;
+
+  /** The platform that is used to provide data for the custom dimension. Acceptable values are "Floodlight". */
+  core.String platformSource;
+
+  /** Name of a saved column to include in the report. The report must be scoped at advertiser or lower, and this saved column must already be created in the DoubleClick Search UI. */
+  core.String savedColumnName;
+
+  /** Inclusive date in YYYY-MM-DD format. When provided, this overrides the overall time range of the report for this column only. Must be provided together with endDate. */
+  core.String startDate;
+
+  /** Create new ReportApiColumnSpec from JSON data */
+  ReportApiColumnSpec.fromJson(core.Map json) {
+    if (json.containsKey("columnName")) {
+      columnName = json["columnName"];
+    }
+    if (json.containsKey("customDimensionName")) {
+      customDimensionName = json["customDimensionName"];
+    }
+    if (json.containsKey("endDate")) {
+      endDate = json["endDate"];
+    }
+    if (json.containsKey("groupByColumn")) {
+      groupByColumn = json["groupByColumn"];
+    }
+    if (json.containsKey("headerText")) {
+      headerText = json["headerText"];
+    }
+    if (json.containsKey("platformSource")) {
+      platformSource = json["platformSource"];
+    }
+    if (json.containsKey("savedColumnName")) {
+      savedColumnName = json["savedColumnName"];
+    }
+    if (json.containsKey("startDate")) {
+      startDate = json["startDate"];
+    }
+  }
+
+  /** Create JSON Object for ReportApiColumnSpec */
+  core.Map toJson() {
+    var output = new core.Map();
+
+    if (columnName != null) {
+      output["columnName"] = columnName;
+    }
+    if (customDimensionName != null) {
+      output["customDimensionName"] = customDimensionName;
+    }
+    if (endDate != null) {
+      output["endDate"] = endDate;
+    }
+    if (groupByColumn != null) {
+      output["groupByColumn"] = groupByColumn;
+    }
+    if (headerText != null) {
+      output["headerText"] = headerText;
+    }
+    if (platformSource != null) {
+      output["platformSource"] = platformSource;
+    }
+    if (savedColumnName != null) {
+      output["savedColumnName"] = savedColumnName;
+    }
+    if (startDate != null) {
+      output["startDate"] = startDate;
+    }
+
+    return output;
+  }
+
+  /** Return String representation of ReportApiColumnSpec */
+  core.String toString() => JSON.encode(this.toJson());
+
+}
+
+/** A request object used to create a DoubleClick Search report. */
 class ReportRequest {
 
   /** The columns to include in the report. This includes both DoubleClick Search columns and saved columns. For DoubleClick Search columns, only the columnName parameter is required. For saved columns only the savedColumnName parameter is required. Both columnName and savedColumnName cannot be set in the same stanza. */
-  core.List<ReportRequestColumns> columns;
+  core.List<ReportApiColumnSpec> columns;
 
   /** Format that the report should be returned in. Currently csv or tsv is supported. */
   core.String downloadFormat;
@@ -601,7 +693,7 @@ class ReportRequest {
   /** Create new ReportRequest from JSON data */
   ReportRequest.fromJson(core.Map json) {
     if (json.containsKey("columns")) {
-      columns = json["columns"].map((columnsItem) => new ReportRequestColumns.fromJson(columnsItem)).toList();
+      columns = json["columns"].map((columnsItem) => new ReportApiColumnSpec.fromJson(columnsItem)).toList();
     }
     if (json.containsKey("downloadFormat")) {
       downloadFormat = json["downloadFormat"];
@@ -699,83 +791,10 @@ class ReportRequest {
 
 }
 
-class ReportRequestColumns {
-
-  /** Name of a DoubleClick Search column to include in the report. */
-  core.String columnName;
-
-  /** Inclusive day in YYYY-MM-DD format. When provided, this overrides the overall time range of the report for this column only. Must be provided together with startDate. */
-  core.String endDate;
-
-  /** Synchronous report only. Set to true to group by this column. Defaults to false. */
-  core.bool groupByColumn;
-
-  /** Text used to identify this column in the report output; defaults to columnName or savedColumnName when not specified. This can be used to prevent collisions between DoubleClick Search columns and saved columns with the same name. */
-  core.String headerText;
-
-  /** Name of a saved column to include in the report. The report must be scoped at advertiser or lower, and this saved column must already be created in the DoubleClick Search UI. */
-  core.String savedColumnName;
-
-  /** Inclusive date in YYYY-MM-DD format. When provided, this overrides the overall time range of the report for this column only. Must be provided together with endDate. */
-  core.String startDate;
-
-  /** Create new ReportRequestColumns from JSON data */
-  ReportRequestColumns.fromJson(core.Map json) {
-    if (json.containsKey("columnName")) {
-      columnName = json["columnName"];
-    }
-    if (json.containsKey("endDate")) {
-      endDate = json["endDate"];
-    }
-    if (json.containsKey("groupByColumn")) {
-      groupByColumn = json["groupByColumn"];
-    }
-    if (json.containsKey("headerText")) {
-      headerText = json["headerText"];
-    }
-    if (json.containsKey("savedColumnName")) {
-      savedColumnName = json["savedColumnName"];
-    }
-    if (json.containsKey("startDate")) {
-      startDate = json["startDate"];
-    }
-  }
-
-  /** Create JSON Object for ReportRequestColumns */
-  core.Map toJson() {
-    var output = new core.Map();
-
-    if (columnName != null) {
-      output["columnName"] = columnName;
-    }
-    if (endDate != null) {
-      output["endDate"] = endDate;
-    }
-    if (groupByColumn != null) {
-      output["groupByColumn"] = groupByColumn;
-    }
-    if (headerText != null) {
-      output["headerText"] = headerText;
-    }
-    if (savedColumnName != null) {
-      output["savedColumnName"] = savedColumnName;
-    }
-    if (startDate != null) {
-      output["startDate"] = startDate;
-    }
-
-    return output;
-  }
-
-  /** Return String representation of ReportRequestColumns */
-  core.String toString() => JSON.encode(this.toJson());
-
-}
-
 class ReportRequestFilters {
 
   /** Column to perform the filter on. This can be a DoubleClick Search column or a saved column. */
-  ReportRequestFiltersColumn column;
+  ReportApiColumnSpec column;
 
   /** Operator to use in the filter. See the filter reference for a list of available operators. */
   core.String operator;
@@ -786,7 +805,7 @@ class ReportRequestFilters {
   /** Create new ReportRequestFilters from JSON data */
   ReportRequestFilters.fromJson(core.Map json) {
     if (json.containsKey("column")) {
-      column = new ReportRequestFiltersColumn.fromJson(json["column"]);
+      column = new ReportApiColumnSpec.fromJson(json["column"]);
     }
     if (json.containsKey("operator")) {
       operator = json["operator"];
@@ -818,48 +837,10 @@ class ReportRequestFilters {
 
 }
 
-/** Column to perform the filter on. This can be a DoubleClick Search column or a saved column. */
-class ReportRequestFiltersColumn {
-
-  /** Name of a DoubleClick Search column to filter on. */
-  core.String columnName;
-
-  /** Name of a saved column to filter on. */
-  core.String savedColumnName;
-
-  /** Create new ReportRequestFiltersColumn from JSON data */
-  ReportRequestFiltersColumn.fromJson(core.Map json) {
-    if (json.containsKey("columnName")) {
-      columnName = json["columnName"];
-    }
-    if (json.containsKey("savedColumnName")) {
-      savedColumnName = json["savedColumnName"];
-    }
-  }
-
-  /** Create JSON Object for ReportRequestFiltersColumn */
-  core.Map toJson() {
-    var output = new core.Map();
-
-    if (columnName != null) {
-      output["columnName"] = columnName;
-    }
-    if (savedColumnName != null) {
-      output["savedColumnName"] = savedColumnName;
-    }
-
-    return output;
-  }
-
-  /** Return String representation of ReportRequestFiltersColumn */
-  core.String toString() => JSON.encode(this.toJson());
-
-}
-
 class ReportRequestOrderBy {
 
   /** Column to perform the sort on. This can be a DoubleClick Search-defined column or a saved column. */
-  ReportRequestOrderByColumn column;
+  ReportApiColumnSpec column;
 
   /** The sort direction, which is either ascending or descending. */
   core.String sortOrder;
@@ -867,7 +848,7 @@ class ReportRequestOrderBy {
   /** Create new ReportRequestOrderBy from JSON data */
   ReportRequestOrderBy.fromJson(core.Map json) {
     if (json.containsKey("column")) {
-      column = new ReportRequestOrderByColumn.fromJson(json["column"]);
+      column = new ReportApiColumnSpec.fromJson(json["column"]);
     }
     if (json.containsKey("sortOrder")) {
       sortOrder = json["sortOrder"];
@@ -889,44 +870,6 @@ class ReportRequestOrderBy {
   }
 
   /** Return String representation of ReportRequestOrderBy */
-  core.String toString() => JSON.encode(this.toJson());
-
-}
-
-/** Column to perform the sort on. This can be a DoubleClick Search-defined column or a saved column. */
-class ReportRequestOrderByColumn {
-
-  /** Name of a DoubleClick Search column to sort by. */
-  core.String columnName;
-
-  /** Name of a saved column to sort by. */
-  core.String savedColumnName;
-
-  /** Create new ReportRequestOrderByColumn from JSON data */
-  ReportRequestOrderByColumn.fromJson(core.Map json) {
-    if (json.containsKey("columnName")) {
-      columnName = json["columnName"];
-    }
-    if (json.containsKey("savedColumnName")) {
-      savedColumnName = json["savedColumnName"];
-    }
-  }
-
-  /** Create JSON Object for ReportRequestOrderByColumn */
-  core.Map toJson() {
-    var output = new core.Map();
-
-    if (columnName != null) {
-      output["columnName"] = columnName;
-    }
-    if (savedColumnName != null) {
-      output["savedColumnName"] = savedColumnName;
-    }
-
-    return output;
-  }
-
-  /** Return String representation of ReportRequestOrderByColumn */
   core.String toString() => JSON.encode(this.toJson());
 
 }
